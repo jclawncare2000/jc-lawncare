@@ -13,16 +13,22 @@
       --cream: #fff8dc;
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: 'Georgia', serif;
       background-color: var(--deep-green);
       color: var(--gold);
+      scroll-behavior: smooth;
     }
 
     header.hero {
       background-image: url('https://www.unlimitedlawncare.com/public_files/unlimitedlawncare-s3-live/styles/hero_1600x520/public/images/dark-green-grass.webp?h=df67fb46&itok=F0x8oG1q');
       background-size: cover;
+      background-attachment: fixed;
       background-position: center top;
       height: 100vh;
       position: relative;
@@ -31,6 +37,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
+      overflow: hidden;
     }
 
     header.hero::before {
@@ -48,23 +55,47 @@
       position: relative;
       z-index: 2;
       padding: 20px;
+      animation: fadeInUp 1.5s ease-in-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     header.hero img {
       max-width: 140px;
       margin-bottom: 15px;
+      animation: popIn 1.5s ease forwards;
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     header.hero h1 {
-      font-family: 'Cinzel', serif;
-      font-size: 3rem;
-      letter-spacing: 2px;
-      background: linear-gradient(to bottom right, #fff8dc, #d4af37, #a67c00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-      margin: 0;
-    }
+  font-family: 'Cinzel', serif;
+  font-size: 3rem;
+  letter-spacing: 2px;
+  background: linear-gradient(to bottom right, #fff8dc, #d1b46f, #a67c00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+  margin: 0;
+}
 
     header.hero p {
       color: var(--cream);
@@ -84,11 +115,12 @@
       border-radius: 10px;
       cursor: pointer;
       box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
     .cta-button:hover {
       background-color: #ffc107;
+      transform: scale(1.05);
     }
 
     section.subscription {
@@ -120,6 +152,11 @@
       width: 300px;
       color: var(--cream);
       box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .plan:hover {
+      transform: translateY(-10px);
     }
 
     .plan h3 {
@@ -152,6 +189,41 @@
       border-radius: 8px;
       cursor: pointer;
       margin-top: 10px;
+      transition: transform 0.2s ease;
+    }
+
+    .plan button:hover {
+      transform: scale(1.05);
+    }
+
+    section.service-area {
+      background-color: #0a2d22;
+      padding: 60px 20px;
+      color: var(--cream);
+      text-align: center;
+    }
+
+    section.service-area h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      background: linear-gradient(to bottom right, #ffecb3, #d4af37, #a67c00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    }
+
+    section.service-area p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+    }
+
+    .map-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      border-radius: 12px;
+      overflow: hidden;
     }
 
     footer {
@@ -209,21 +281,22 @@
       </div>
     </div>
   </section>
-<section class="service-area" id="service-area">
-  <h2>Our Service Area</h2>
-  <p>J&C Lawn Care is proudly based in <strong>Chambersburg, PA</strong>. We serve clients across South Central Pennsylvania and Northern Maryland—from <strong>Carlisle, PA</strong> to <strong>Hagerstown, MD</strong>.</p>
-  <div class="map-container">
-    <iframe
-      src="https://www.google.com/maps/d/u/0/embed?mid=1Qaef8oFt64F7e2FwOa5gFByWJdy0v5M&ehbc=2E312F" 
-      width="100%" 
-      height="400" 
-      style="border:0;" 
-      allowfullscreen="" 
-      loading="lazy" 
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-  </div>
-</section>
+
+  <section class="service-area" id="service-area">
+    <h2>Our Service Area</h2>
+    <p>J&C Lawn Care is proudly based in <strong>Chambersburg, PA</strong>. We serve clients across South Central Pennsylvania and Northern Maryland—from <strong>Carlisle, PA</strong> to <strong>Hagerstown, MD</strong>.</p>
+    <div class="map-container">
+      <iframe
+        src="https://www.google.com/maps/d/u/0/embed?mid=1Qaef8oFt64F7e2FwOa5gFByWJdy0v5M&ehbc=2E312F" 
+        width="100%" 
+        height="400" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </section>
 
   <footer>
     &copy; 2025 J&C Lawn Care. All rights reserved. | info@jclawncare.com | (555) 123-4567
@@ -231,3 +304,4 @@
 
 </body>
 </html>
+
