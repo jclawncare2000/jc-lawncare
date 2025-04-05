@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>J&C Lawn Care</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --gold: #d4af37;
+      --gold: #e5c87d;
       --deep-green: #0a2d22;
-      --dark-overlay: rgba(10, 45, 34, 0.7);
+      --dark-overlay: rgba(10, 45, 34, 0.75);
       --cream: #fff8dc;
     }
 
@@ -19,7 +19,7 @@
 
     body {
       margin: 0;
-      font-family: 'Georgia', serif;
+      font-family: Georgia, serif;
       background-color: var(--deep-green);
       color: var(--gold);
       scroll-behavior: smooth;
@@ -28,216 +28,198 @@
     header.hero {
       background-image: url('https://www.unlimitedlawncare.com/public_files/unlimitedlawncare-s3-live/styles/hero_1600x520/public/images/dark-green-grass.webp?h=df67fb46&itok=F0x8oG1q');
       background-size: cover;
-      background-attachment: fixed;
       background-position: center top;
       height: 100vh;
-      position: relative;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
+      position: relative;
       text-align: center;
-      overflow: hidden;
     }
 
     header.hero::before {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: var(--dark-overlay);
       z-index: 1;
     }
 
-    header.hero .content {
+    .content {
       position: relative;
       z-index: 2;
-      padding: 20px;
-      animation: fadeInUp 1.5s ease-in-out;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      animation: fadeIn 1.5s ease-in-out;
     }
 
     header.hero img {
-      max-width: 140px;
-      margin-bottom: 15px;
-      animation: popIn 1.5s ease forwards;
-    }
-
-    @keyframes popIn {
-      0% {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
+      max-width: 200px;
+      margin-bottom: 20px;
+      animation: slideDown 1.2s ease forwards;
     }
 
     header.hero h1 {
-  font-family: 'Cinzel', serif;
-  font-size: 3rem;
-  letter-spacing: 2px;
-  background: linear-gradient(to bottom right, #fff8dc, #d1b46f, #a67c00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-  margin: 0;
-}
+      font-family: 'Cinzel', serif;
+      font-size: 3.5rem;
+      background: linear-gradient(to bottom right, #fff8dc, #e5c87d, #a67c00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+    }
 
     header.hero p {
       color: var(--cream);
-      font-size: 1.2rem;
-      margin: 20px auto;
+      font-size: 1.3rem;
       max-width: 600px;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+      margin: 20px auto;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
     }
 
     .cta-button {
       background-color: var(--gold);
       color: #000;
-      padding: 15px 30px;
-      font-weight: bold;
+      padding: 14px 30px;
       font-size: 1rem;
+      font-weight: bold;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       transition: background-color 0.3s ease, transform 0.2s ease;
     }
-
     .cta-button:hover {
-      background-color: #ffc107;
+      background-color: #ffd966;
       transform: scale(1.05);
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
     section.subscription {
-      background-color: #052116;
       padding: 60px 20px;
       text-align: center;
+      background-color: #052116;
     }
 
     section.subscription h2 {
-      font-size: 2.5rem;
-      margin-bottom: 30px;
-      background: linear-gradient(to bottom right, #ffecb3, #d4af37, #a67c00);
+      font-size: 2.7rem;
+      margin-bottom: 40px;
+      background: linear-gradient(to bottom right, #fff8dc, #e5c87d, #a67c00);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
     }
 
     .plans {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 20px;
+      gap: 30px;
     }
 
     .plan {
       background-color: var(--deep-green);
-      padding: 30px;
       border-radius: 12px;
-      width: 300px;
+      width: 320px;
+      padding: 30px;
       color: var(--cream);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
       transition: transform 0.3s ease;
     }
-
     .plan:hover {
       transform: translateY(-10px);
     }
 
     .plan h3 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       margin-bottom: 15px;
+      color: var(--gold);
     }
 
     .plan ul {
+      padding-left: 0;
       list-style: none;
-      padding: 0;
       text-align: left;
+      margin-bottom: 20px;
     }
-
-    .plan ul li {
+    .plan li {
       margin-bottom: 10px;
     }
 
-    .plan .price {
-      font-size: 1.3rem;
-      font-weight: bold;
-      margin: 15px 0;
+    .price {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
     }
 
     .plan button {
       background-color: var(--gold);
       color: #000;
-      padding: 10px 20px;
       font-weight: bold;
       border: none;
-      border-radius: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 10px;
       transition: transform 0.2s ease;
     }
 
     .plan button:hover {
-      transform: scale(1.05);
+      transform: scale(1.07);
+    }
+
+    .plan-description {
+      margin-top: 30px;
+      text-align: left;
+    }
+
+    .plan-description h4 {
+      color: var(--cream);
+      font-size: 1.3rem;
     }
 
     section.service-area {
-      background-color: #0a2d22;
       padding: 60px 20px;
-      color: var(--cream);
+      background-color: #0a2d22;
       text-align: center;
     }
 
     section.service-area h2 {
       font-size: 2.5rem;
       margin-bottom: 20px;
-      background: linear-gradient(to bottom right, #ffecb3, #d4af37, #a67c00);
+      background: linear-gradient(to bottom right, #fff8dc, #e5c87d, #a67c00);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
     }
 
     section.service-area p {
       font-size: 1.1rem;
       max-width: 700px;
-      margin: 0 auto 30px auto;
+      margin: 0 auto 30px;
+      color: var(--cream);
     }
 
-    .map-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    .map-container iframe {
+      width: 100%; height: 400px;
+      border: none;
       border-radius: 12px;
-      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     }
 
     footer {
       background-color: #052116;
-      text-align: center;
       padding: 30px 20px;
       color: var(--gold);
       font-size: 0.9rem;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+      text-align: center;
     }
   </style>
 </head>
 <body>
-
   <header class="hero">
     <div class="content">
       <img src="https://jclawncare2000.github.io/jc-lawncare/logo.PNG" alt="J&C Lawn Care Logo">
@@ -257,8 +239,9 @@
           <li>Trimming & edging</li>
         </ul>
         <div class="price">$120 / month</div>
-        <button>Subscribe</button>
+        <button onclick="alert('Payment integration coming soon!')">Subscribe</button>
       </div>
+
       <div class="plan">
         <h3>Standard Plan</h3>
         <ul>
@@ -267,8 +250,9 @@
           <li>Seasonal clean-ups</li>
         </ul>
         <div class="price">$175 / month</div>
-        <button>Subscribe</button>
+        <button onclick="alert('Payment integration coming soon!')">Subscribe</button>
       </div>
+
       <div class="plan">
         <h3>Premium Plan</h3>
         <ul>
@@ -277,7 +261,7 @@
           <li>Hedge trimming</li>
         </ul>
         <div class="price">$240 / month</div>
-        <button>Subscribe</button>
+        <button onclick="alert('Payment integration coming soon!')">Subscribe</button>
       </div>
     </div>
   </section>
@@ -287,21 +271,16 @@
     <p>J&C Lawn Care is proudly based in <strong>Chambersburg, PA</strong>. We serve clients across South Central Pennsylvania and Northern Maryland—from <strong>Carlisle, PA</strong> to <strong>Hagerstown, MD</strong>.</p>
     <div class="map-container">
       <iframe
-        src="https://www.google.com/maps/d/u/0/embed?mid=1Qaef8oFt64F7e2FwOa5gFByWJdy0v5M&ehbc=2E312F" 
-        width="100%" 
-        height="400" 
-        style="border:0;" 
-        allowfullscreen="" 
-        loading="lazy" 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d98036.82703383947!2d-77.5967093!3d39.942186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c9a4d937dd2687%3A0x6ee0a0d0609b13e3!2sChambersburg%2C%20PA!5e0!3m2!1sen!2sus!4v1712080000000"
+        allowfullscreen=""
+        loading="lazy"
         referrerpolicy="no-referrer-when-downgrade">
       </iframe>
     </div>
   </section>
 
   <footer>
-    &copy; 2025 J&C Lawn Care. All rights reserved. | info@jclawncare.com | (555) 123-4567
+    &copy; 2025 J&C Lawn Care. All rights reserved. | info@jclawncare.com | 223-345-8881
   </footer>
-
 </body>
 </html>
-
