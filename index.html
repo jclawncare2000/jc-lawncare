@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>J&C Lawn Care</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+  <script src="https://js.stripe.com/v3/"></script>
   <style>
     :root {
       --gold: #e5c87d;
@@ -172,16 +173,6 @@
       transform: scale(1.07);
     }
 
-    .plan-description {
-      margin-top: 30px;
-      text-align: left;
-    }
-
-    .plan-description h4 {
-      color: var(--cream);
-      font-size: 1.3rem;
-    }
-
     section.service-area {
       padding: 60px 20px;
       background-color: #0a2d22;
@@ -239,7 +230,7 @@
           <li>Trimming & edging</li>
         </ul>
         <div class="price">$120 / month</div>
-        <button onclick="alert('Payment integration coming soon!')">Subscribe</button>
+        <button onclick="redirectToCheckout('price_1RAupGBOeL3nCqq3ZHQurSFo')">Subscribe</button>
       </div>
 
       <div class="plan">
@@ -250,7 +241,7 @@
           <li>Seasonal clean-ups</li>
         </ul>
         <div class="price">$175 / month</div>
-        <button onclick="alert('Payment integration coming soon!')">Subscribe</button>
+        <button onclick="redirectToCheckout('price_standard')">Subscribe</button>
       </div>
 
       <div class="plan">
@@ -261,7 +252,7 @@
           <li>Hedge trimming</li>
         </ul>
         <div class="price">$240 / month</div>
-        <button onclick="alert('Payment integration coming soon!')">Subscribe</button>
+        <button onclick="redirectToCheckout('price_premium')">Subscribe</button>
       </div>
     </div>
   </section>
@@ -282,5 +273,20 @@
   <footer>
     &copy; 2025 J&C Lawn Care. All rights reserved. | info@jclawncare.com | 223-345-8881
   </footer>
+
+  <script>
+    const stripe = Stripe("pk_test_51RAWjsBOeL3nCqq3Tr31XuSsHs8kNPlLXdIrfi4e039uPlktDfqozJoq6V28acNpzIA1SsTYlvQKwC39B1kwZZPX00e6oHFSks");
+
+    function redirectToCheckout(priceId) {
+      stripe.redirectToCheckout({
+        lineItems: [{ price: priceId, quantity: 1 }],
+        mode: 'subscription',
+        successUrl: window.location.origin + '/success.html',
+        cancelUrl: window.location.origin + '/cancel.html'
+      }).then(function (result) {
+        if (result.error) alert(result.error.message);
+      });
+    }
+  </script>
 </body>
 </html>
