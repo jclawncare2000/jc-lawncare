@@ -1,96 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Basic Lawn Care Plan</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Basic Plan | J&C Lawncare</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --gold: #d1b46f;
-      --deep-green: #0b2b1e;
-      --dark-overlay: rgba(11, 43, 30, 0.75);
-      --cream: #fff5dd;
-    }
-
     body {
-      background-color: var(--deep-green);
-      color: var(--cream);
-      font-family: 'Georgia', serif;
       margin: 0;
+      font-family: Georgia, serif;
+      background-color: #0a2d22;
+      color: #fff8dc;
       padding: 40px 20px;
       text-align: center;
     }
-
     h1 {
-      color: var(--gold);
       font-family: 'Cinzel', serif;
-      font-size: 2.8rem;
-      margin-bottom: 20px;
+      font-size: 3rem;
+      margin-bottom: 10px;
     }
-
-    p {
-      font-size: 1.2rem;
+    .plan-details {
+      background: #052116;
+      border-radius: 12px;
+      padding: 40px;
       max-width: 700px;
-      margin: 0 auto 30px;
-      line-height: 1.6;
+      margin: 0 auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
-
+    .price {
+      font-size: 1.8rem;
+      margin: 20px 0;
+      color: #e5c87d;
+    }
     ul {
       list-style: none;
       padding: 0;
-      margin-bottom: 20px;
+      text-align: left;
+      max-width: 400px;
+      margin: 0 auto 30px;
     }
-
     li {
-      margin: 10px 0;
+      margin-bottom: 10px;
       font-size: 1.1rem;
     }
-
-    .price {
-      font-size: 1.4rem;
-      font-weight: bold;
-      margin-bottom: 30px;
-    }
-
     button {
-      background-color: var(--gold);
+      background-color: #e5c87d;
       color: #000;
-      font-weight: bold;
-      font-size: 1rem;
-      border: none;
-      border-radius: 10px;
       padding: 14px 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      transition: transform 0.2s ease;
     }
-
     button:hover {
-      background-color: #f7c65c;
       transform: scale(1.05);
     }
-
-    footer {
-      margin-top: 60px;
-      font-size: 0.9rem;
-      color: var(--gold);
+    a {
+      color: #fff8dc;
+      display: inline-block;
+      margin-top: 30px;
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <h1>Basic Lawn Care Plan</h1>
-  <p>This plan includes essential lawn maintenance services to keep your yard looking fresh and clean. Perfect for homeowners who want consistent, worry-free care.</p>
-  <ul>
-    <li>✔️ Weekly mowing</li>
-    <li>✔️ Trimming & edging</li>
-  </ul>
-  <div class="price">$120 / month</div>
-  <button onclick="alert('Payment integration coming soon!')">Pay Now</button>
+  <h1>Basic Plan</h1>
+  <div class="plan-details">
+    <p>This is the perfect package for small to mid-sized residential properties that want regular maintenance.</p>
+    <ul>
+      <li>✔️ Weekly mowing to maintain a consistent height</li>
+      <li>✔️ Precision trimming around edges, sidewalks, and garden beds</li>
+      <li>✔️ Basic edging for a sharp, clean appearance</li>
+    </ul>
+    <div class="price">$120/month</div>
+    <button onclick="redirectToCheckout('price_1RAupGBOeL3nCqq3ZHQurSFo')">Subscribe Now</button>
+  </div>
+  <a href="index.html#subscriptions">← Back to Plans</a>
 
-  <footer>
-    &copy; 2025 J&C Lawn Care. All rights reserved. | info@jclawncare.com | 223-345-8881
-  </footer>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const stripe = Stripe("pk_test_51RAWjsBOeL3nCqq3Tr31XuSsHs8kNPlLXdIrfi4e039uPlktDfqozJoq6V28acNpzIA1SsTYlvQKwC39B1kwZZPX00e6oHFSks");
+    function redirectToCheckout(priceId) {
+      stripe.redirectToCheckout({
+        lineItems: [{ price: priceId, quantity: 1 }],
+        mode: 'subscription',
+        successUrl: window.location.origin + '/success.html',
+        cancelUrl: window.location.origin + '/cancel.html'
+      });
+    }
+  </script>
 </body>
 </html>
-
