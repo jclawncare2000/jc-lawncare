@@ -692,7 +692,6 @@
   <p>© 2025 J&amp;C Lawncare. All rights reserved.</p>
 </footer>
 
-<script src="https://js.stripe.com/v3/"></script>
 <script>
   // ============================================================
   // STRIPE CONFIGURATION — Replace with your real keys
@@ -723,32 +722,19 @@
     el.classList.add('active');
   }
 
-  // ---- Stripe Checkout ----
-  async function selectPlan(planName, priceId) {
-    const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+  // ---- Stripe Payment Links ----
+  const PAYMENT_LINKS = {
+    Greenkeeper: 'https://buy.stripe.com/4gM4gyalR0ca0Ev5wo4Vy01',
+    Estate:      'https://buy.stripe.com/bJedR89hNe30gDtgb24Vy03',
+    Prestige:    'https://buy.stripe.com/cNi9AS65B0cabj9bUM4Vy02',
+  };
 
-    // Show loading state on button
-    const btns = document.querySelectorAll('.plan-btn');
-    btns.forEach(b => { b.disabled = true; b.textContent = 'Loading...'; });
-
-    try {
-      const { error } = await stripe.redirectToCheckout({
-        lineItems: [{ price: priceId, quantity: 1 }],
-        mode: 'subscription',
-        successUrl: window.location.origin + '/?success=true',
-        cancelUrl: window.location.origin + '/?canceled=true',
-        customerEmail: '',
-      });
-      if (error) {
-        alert('Checkout error: ' + error.message);
-        btns.forEach((b, i) => {
-          b.disabled = false;
-          b.textContent = 'Select Plan';
-        });
-      }
-    } catch(e) {
-      alert('Could not connect to Stripe. Please check your publishable key.');
-      btns.forEach(b => { b.disabled = false; b.textContent = 'Select Plan'; });
+  function selectPlan(planName, priceId) {
+    const link = PAYMENT_LINKS[planName];
+    if (link && !link.includes('PAYMENT_LINK')) {
+      window.location.href = link;
+    } else {
+      alert('Payment link not configured yet.');
     }
   }
 
@@ -764,7 +750,11 @@
   function loadEmailJS() {
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-    script.onload = () => emailjs.init(EMAILJS_PUBLIC_KEY);
+    script.onload = () => {
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+      console.log('EmailJS loaded and initialized');
+    };
+    script.onerror = () => console.error('Failed to load EmailJS');
     document.head.appendChild(script);
   }
   loadEmailJS();
@@ -775,25 +765,32 @@
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
+    // Wait for EmailJS to be ready
+    if (typeof emailjs === 'undefined') {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+    }
+
     const templateParams = {
-      to_email:    'jclawncare2000@gmail.com',
-      from_name:   document.getElementById('fname').value + ' ' + document.getElementById('lname').value,
-      from_email:  document.getElementById('email').value,
-      phone:       document.getElementById('phone').value,
-      address:     document.getElementById('address').value,
-      property_size: document.getElementById('size').value,
-      service:     document.getElementById('service').value,
-      message:     document.getElementById('message').value,
+      from_name:     document.getElementById('fname').value + ' ' + document.getElementById('lname').value,
+      from_email:    document.getElementById('email').value,
+      phone:         document.getElementById('phone').value || 'Not provided',
+      address:       document.getElementById('address').value,
+      property_size: document.getElementById('size').value || 'Not specified',
+      service:       document.getElementById('service').value || 'Not specified',
+      message:       document.getElementById('message').value || 'No message provided',
+      reply_to:      document.getElementById('email').value,
     };
 
     try {
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+      const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+      console.log('EmailJS success:', response);
       document.querySelector('.quote-form').style.display = 'none';
       document.getElementById('form-success').style.display = 'block';
     } catch(err) {
+      console.error('EmailJS error:', JSON.stringify(err));
       btn.textContent = 'Submit Quote Request';
       btn.disabled = false;
-      alert('There was an error sending your message. Please try again or email us directly at jclawncare2000@gmail.com');
+      alert('Error ' + (err.status || '') + ': ' + (err.text || JSON.stringify(err)) + '\n\nPlease email us directly at jclawncare2000@gmail.com');
     }
   }
 
