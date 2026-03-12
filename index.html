@@ -481,7 +481,7 @@
         <div class="plan-tier">Tier I</div>
         <div class="plan-name">Greenkeeper</div>
         <div class="plan-size">Up to ¼ Acre</div>
-        <div class="plan-price"><sup>$</sup><span class="amount">89</span><span class="period">/mo</span></div>
+        <div class="plan-price"><sup>$</sup><span class="amount">49</span><span class="period">/mo</span></div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
           <li>Weekly mowing &amp; edging</li>
@@ -490,7 +490,7 @@
           <li>Priority scheduling</li>
           <li>Online account portal</li>
         </ul>
-        <button class="plan-btn" onclick="selectPlan('Greenkeeper — ¼ Acre — $89/mo')">Select Plan</button>
+        <button class="plan-btn" onclick="selectPlan('Greenkeeper', 'price_GREENKEEPER_ID')">Select Plan</button>
       </div>
 
       <div class="plan-card featured">
@@ -499,7 +499,7 @@
         <div class="plan-tier">Tier II</div>
         <div class="plan-name">Estate</div>
         <div class="plan-size">Up to ½ Acre</div>
-        <div class="plan-price"><sup>$</sup><span class="amount">149</span><span class="period">/mo</span></div>
+        <div class="plan-price"><sup>$</sup><span class="amount">79</span><span class="period">/mo</span></div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
           <li>Weekly mowing &amp; edging</li>
@@ -509,7 +509,7 @@
           <li>Priority scheduling</li>
           <li>Online account portal</li>
         </ul>
-        <button class="plan-btn" onclick="selectPlan('Estate — ½ Acre — $149/mo')">Select Plan</button>
+        <button class="plan-btn" onclick="selectPlan('Estate', 'price_ESTATE_ID')">Select Plan</button>
       </div>
 
       <div class="plan-card">
@@ -517,7 +517,7 @@
         <div class="plan-tier">Tier III</div>
         <div class="plan-name">Prestige</div>
         <div class="plan-size">Over 1 Acre</div>
-        <div class="plan-price"><sup>$</sup><span class="amount">229</span><span class="period">/mo</span></div>
+        <div class="plan-price"><sup>$</sup><span class="amount">119</span><span class="period">/mo</span></div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
           <li>Weekly mowing &amp; edging</li>
@@ -527,7 +527,7 @@
           <li>Seasonal schedule adjustments</li>
           <li>Dedicated account manager</li>
         </ul>
-        <button class="plan-btn" onclick="selectPlan('Prestige — Over 1 Acre — $229/mo')">Select Plan</button>
+        <button class="plan-btn" onclick="selectPlan('Prestige', 'price_PRESTIGE_ID')">Select Plan</button>
       </div>
     </div>
   </section>
@@ -692,7 +692,30 @@
   <p>© 2025 J&amp;C Lawncare. All rights reserved.</p>
 </footer>
 
+<script src="https://js.stripe.com/v3/"></script>
 <script>
+  // ============================================================
+  // STRIPE CONFIGURATION — Replace with your real keys
+  // Get these from https://dashboard.stripe.com/apikeys
+  // and https://dashboard.stripe.com/products
+  // ============================================================
+  const STRIPE_PUBLISHABLE_KEY = 'pk_live_51RAWjkBCC5ADNwpk2MwSy6jpYsSDpatHxKH3CELpYGpwRR0HqAKys6ImXKvA3WNa6VCmJAGqTfR2GgeIBYpXmMgb00ZR9prES9';
+  const STRIPE_PRICE_IDS = {
+    Greenkeeper: 'price_1T9yE1BCC5ADNwpk60JH32Zu',
+    Estate:      'price_1T9yE0BCC5ADNwpkacFAmEDL',
+    Prestige:    'price_1T9yE1BCC5ADNwpkt8sWjTPR',
+  };
+
+  // ============================================================
+  // EMAILJS CONFIGURATION — Replace with your real keys
+  // Sign up free at https://www.emailjs.com
+  // Service ID, Template ID, and Public Key from your dashboard
+  // ============================================================
+  const EMAILJS_SERVICE_ID  = 'YOUR_EMAILJS_SERVICE_ID';
+  const EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
+  const EMAILJS_PUBLIC_KEY  = 'YOUR_EMAILJS_PUBLIC_KEY';
+
+  // ---- Tab switching ----
   function switchTab(name, el) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -700,13 +723,33 @@
     el.classList.add('active');
   }
 
-  function selectPlan(planName) {
-    setTimeout(() => {
-      const serviceSelect = document.getElementById('service');
-      serviceSelect.value = 'lawn';
-      const msg = document.getElementById('message');
-      msg.value = 'I am interested in the ' + planName + ' plan.';
-    }, 400);
+  // ---- Stripe Checkout ----
+  async function selectPlan(planName, priceId) {
+    const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+
+    // Show loading state on button
+    const btns = document.querySelectorAll('.plan-btn');
+    btns.forEach(b => { b.disabled = true; b.textContent = 'Loading...'; });
+
+    try {
+      const { error } = await stripe.redirectToCheckout({
+        lineItems: [{ price: priceId, quantity: 1 }],
+        mode: 'subscription',
+        successUrl: window.location.origin + '/?success=true',
+        cancelUrl: window.location.origin + '/?canceled=true',
+        customerEmail: '',
+      });
+      if (error) {
+        alert('Checkout error: ' + error.message);
+        btns.forEach((b, i) => {
+          b.disabled = false;
+          b.textContent = 'Select Plan';
+        });
+      }
+    } catch(e) {
+      alert('Could not connect to Stripe. Please check your publishable key.');
+      btns.forEach(b => { b.disabled = false; b.textContent = 'Select Plan'; });
+    }
   }
 
   function selectService(serviceName) {
@@ -717,12 +760,44 @@
     }, 400);
   }
 
-  function handleSubmit(e) {
+  // ---- EmailJS Quote Form ----
+  function loadEmailJS() {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+    script.onload = () => emailjs.init(EMAILJS_PUBLIC_KEY);
+    document.head.appendChild(script);
+  }
+  loadEmailJS();
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    document.querySelector('.quote-form').style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    const templateParams = {
+      to_email:    'jclawncare2000@gmail.com',
+      from_name:   document.getElementById('fname').value + ' ' + document.getElementById('lname').value,
+      from_email:  document.getElementById('email').value,
+      phone:       document.getElementById('phone').value,
+      address:     document.getElementById('address').value,
+      property_size: document.getElementById('size').value,
+      service:     document.getElementById('service').value,
+      message:     document.getElementById('message').value,
+    };
+
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+      document.querySelector('.quote-form').style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    } catch(err) {
+      btn.textContent = 'Submit Quote Request';
+      btn.disabled = false;
+      alert('There was an error sending your message. Please try again or email us directly at jclawncare2000@gmail.com');
+    }
   }
 
+  // ---- Scroll reveal ----
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 60);
@@ -730,10 +805,23 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+  // ---- Nav scroll ----
   window.addEventListener('scroll', () => {
-    const nav = document.querySelector('nav');
-    nav.style.background = window.scrollY > 80 ? 'rgba(8,8,8,0.98)' : 'rgba(8,8,8,0.97)';
+    document.querySelector('nav').style.background =
+      window.scrollY > 80 ? 'rgba(8,8,8,0.98)' : 'rgba(8,8,8,0.97)';
   });
+
+  // ---- Success message check ----
+  if (window.location.search.includes('success=true')) {
+    document.body.insertAdjacentHTML('afterbegin', `
+      <div style="position:fixed;inset:0;background:rgba(7,7,7,0.96);z-index:9998;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;" onclick="this.remove();history.replaceState(null,'',window.location.pathname)">
+        <div style="font-size:60px">✅</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:32px;color:#F9F4E8;">Subscription Confirmed!</h2>
+        <p style="color:rgba(249,244,232,0.7);font-style:italic;">Welcome to J&C Lawncare. We'll be in touch shortly.</p>
+        <p style="color:rgba(249,244,232,0.4);font-size:13px;">Click anywhere to dismiss</p>
+      </div>
+    `);
+  }
 </script>
 </body>
 </html>
