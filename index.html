@@ -430,6 +430,224 @@
     .why-section { padding: 60px 24px; }
     footer { padding: 40px 24px; }
   }
+
+  /* IMAGE SLIDER */
+  .slider-section {
+    background: var(--dark-2);
+    padding: 100px 0;
+    overflow: hidden;
+  }
+
+  .slider-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  .slider-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .slider-header .divider { margin: 20px auto; }
+
+  .slider-wrapper {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .slider-track {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .slide {
+    min-width: 100%;
+    position: relative;
+    aspect-ratio: 16/7;
+    overflow: hidden;
+    background: var(--dark-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 8s ease;
+    transform: scale(1.05);
+  }
+
+  .slide.active .slide-bg { transform: scale(1); }
+
+  .slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(7,7,7,0.85) 0%,
+      rgba(7,7,7,0.4) 50%,
+      rgba(7,7,7,0.2) 100%
+    );
+  }
+
+  .slide-content {
+    position: relative;
+    z-index: 2;
+    padding: 60px 70px;
+    max-width: 560px;
+    align-self: center;
+    margin-right: auto;
+  }
+
+  .slide-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .slide-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3vw, 42px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--cream);
+    margin-bottom: 14px;
+  }
+
+  .slide-title em { color: var(--gold-light); font-style: italic; }
+
+  .slide-desc {
+    font-size: 16px;
+    color: rgba(249,244,232,0.8);
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  /* Slide emoji illustration area */
+  .slide-illustration {
+    position: absolute;
+    right: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: clamp(80px, 12vw, 160px);
+    opacity: 0.12;
+    z-index: 1;
+    filter: blur(1px);
+  }
+
+  /* Nav arrows */
+  .slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(7,7,7,0.7);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 20px;
+    backdrop-filter: blur(4px);
+  }
+
+  .slider-nav:hover {
+    background: var(--gold);
+    color: var(--dark);
+    border-color: var(--gold);
+  }
+
+  .slider-prev { left: 20px; }
+  .slider-right { right: 20px; }
+
+  /* Dots */
+  .slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .slider-dot {
+    width: 28px;
+    height: 2px;
+    background: rgba(201,168,76,0.25);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+  }
+
+  .slider-dot.active {
+    background: var(--gold);
+    width: 48px;
+  }
+
+  /* Thumbnail strip */
+  .slider-thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .slider-thumb {
+    flex: 1;
+    aspect-ratio: 16/9;
+    background: var(--dark-3);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    opacity: 0.5;
+  }
+
+  .slider-thumb.active {
+    border-color: var(--gold);
+    opacity: 1;
+  }
+
+  .slider-thumb:hover { opacity: 0.85; }
+
+  .thumb-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(7,7,7,0.8);
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: var(--cream);
+    text-transform: uppercase;
+    padding: 5px 4px;
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .slider-inner { padding: 0; }
+    .slide-content { padding: 30px; max-width: 100%; }
+    .slide-illustration { display: none; }
+    .slider-thumbs { display: none; }
+    .slide { aspect-ratio: 4/3; }
+  }
+
 </style>
 </head>
 <body>
@@ -481,7 +699,7 @@
         <div class="plan-tier">Tier I</div>
         <div class="plan-name">Greenkeeper</div>
         <div class="plan-size">Up to ¼ Acre</div>
-        <div class="plan-price"><sup>$</sup><span class="amount">49</span><span class="period">/mo</span></div>
+        <div class="plan-price"><sup>$</sup><span class="amount">196</span><span class="period">/mo</span></div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
           <li>Weekly mowing &amp; edging</li>
@@ -499,7 +717,7 @@
         <div class="plan-tier">Tier II</div>
         <div class="plan-name">Estate</div>
         <div class="plan-size">Up to ½ Acre</div>
-        <div class="plan-price"><sup>$</sup><span class="amount">79</span><span class="period">/mo</span></div>
+        <div class="plan-price"><sup>$</sup><span class="amount">316</span><span class="period">/mo</span></div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
           <li>Weekly mowing &amp; edging</li>
@@ -517,7 +735,7 @@
         <div class="plan-tier">Tier III</div>
         <div class="plan-name">Prestige</div>
         <div class="plan-size">Over 1 Acre</div>
-        <div class="plan-price"><sup>$</sup><span class="amount">119</span><span class="period">/mo</span></div>
+        <div class="plan-price"><sup>$</sup><span class="amount">476</span><span class="period">/mo</span></div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
           <li>Weekly mowing &amp; edging</li>
@@ -540,6 +758,125 @@
     <a href="#quote" class="btn-primary">Request Custom Quote</a>
   </div>
 </div>
+
+
+<!-- IMAGE SLIDER SECTION -->
+<div class="slider-section">
+  <div class="slider-inner">
+    <div class="slider-header reveal">
+      <span class="section-label">Our Work</span>
+      <h2 class="section-title">Transforming <em>Properties</em></h2>
+      <div class="divider"></div>
+      <p style="font-size:17px;color:rgba(249,244,232,0.88);font-style:italic;max-width:500px;margin:0 auto;line-height:1.8;">
+        From routine maintenance to full landscape transformations — here's a look at what we do.
+      </p>
+    </div>
+
+    <div class="slider-wrapper reveal" id="mainSlider">
+      <div class="slider-track" id="sliderTrack">
+
+        <!-- Slide 1: Lawn Mowing -->
+        <div class="slide active">
+          <div class="slide-bg" style="background: radial-gradient(ellipse at 60% 50%, rgba(34,85,34,0.5), rgba(7,7,7,0.9)), linear-gradient(135deg, #0a1a0a, #1a2e1a);"></div>
+          <div class="slide-overlay"></div>
+          <div class="slide-illustration">🌿</div>
+          <div class="slide-content">
+            <span class="slide-tag">Lawn Care</span>
+            <h3 class="slide-title">Precision <em>Mowing & Edging</em></h3>
+            <p class="slide-desc">Clean lines, sharp edges, and a perfectly manicured lawn every single visit. We take pride in the details that make your property stand out.</p>
+          </div>
+        </div>
+
+        <!-- Slide 2: Garden Beds -->
+        <div class="slide">
+          <div class="slide-bg" style="background: radial-gradient(ellipse at 60% 50%, rgba(80,60,20,0.5), rgba(7,7,7,0.9)), linear-gradient(135deg, #1a1205, #2e2010);"></div>
+          <div class="slide-overlay"></div>
+          <div class="slide-illustration">🌸</div>
+          <div class="slide-content">
+            <span class="slide-tag">Landscaping</span>
+            <h3 class="slide-title">Garden Bed <em>Design & Installation</em></h3>
+            <p class="slide-desc">Custom garden beds designed to complement your home's architecture. Fresh mulch, seasonal plantings, and clean borders that make a statement.</p>
+          </div>
+        </div>
+
+        <!-- Slide 3: Mulching -->
+        <div class="slide">
+          <div class="slide-bg" style="background: radial-gradient(ellipse at 60% 50%, rgba(100,70,30,0.5), rgba(7,7,7,0.9)), linear-gradient(135deg, #1a0e05, #2a1a08);"></div>
+          <div class="slide-overlay"></div>
+          <div class="slide-illustration">🍂</div>
+          <div class="slide-content">
+            <span class="slide-tag">Landscaping</span>
+            <h3 class="slide-title">Mulching & <em>Ground Cover</em></h3>
+            <p class="slide-desc">Fresh mulch installation that retains moisture, suppresses weeds, and gives your property a polished, finished look year-round.</p>
+          </div>
+        </div>
+
+        <!-- Slide 4: Fertilizing -->
+        <div class="slide">
+          <div class="slide-bg" style="background: radial-gradient(ellipse at 60% 50%, rgba(20,80,20,0.5), rgba(7,7,7,0.9)), linear-gradient(135deg, #050f05, #0a1e0a);"></div>
+          <div class="slide-overlay"></div>
+          <div class="slide-illustration">🌱</div>
+          <div class="slide-content">
+            <span class="slide-tag">Fertilizing</span>
+            <h3 class="slide-title">Lush, <em>Deep-Green Lawns</em></h3>
+            <p class="slide-desc">Our custom fertilization programs are calibrated to your specific soil type and grass variety — the foundation of a truly healthy lawn.</p>
+          </div>
+        </div>
+
+        <!-- Slide 5: Snow Removal -->
+        <div class="slide">
+          <div class="slide-bg" style="background: radial-gradient(ellipse at 60% 50%, rgba(20,40,80,0.5), rgba(7,7,7,0.9)), linear-gradient(135deg, #050a1a, #0a1030);"></div>
+          <div class="slide-overlay"></div>
+          <div class="slide-illustration">❄️</div>
+          <div class="slide-content">
+            <span class="slide-tag">Snow Removal</span>
+            <h3 class="slide-title">Winter <em>Ready & Clear</em></h3>
+            <p class="slide-desc">Fast, reliable snow removal after every storm. Driveways, walkways, and entry points cleared so you never have to worry about the winter season.</p>
+          </div>
+        </div>
+
+        <!-- Slide 6: Full Property -->
+        <div class="slide">
+          <div class="slide-bg" style="background: radial-gradient(ellipse at 60% 50%, rgba(150,120,30,0.4), rgba(7,7,7,0.9)), linear-gradient(135deg, #0f0c02, #1e1804);"></div>
+          <div class="slide-overlay"></div>
+          <div class="slide-illustration">🏡</div>
+          <div class="slide-content">
+            <span class="slide-tag">Full Service</span>
+            <h3 class="slide-title">Complete Property <em>Transformations</em></h3>
+            <p class="slide-desc">From the curb to the back fence — we handle every aspect of your outdoor space so your property always looks its absolute best.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Nav Arrows -->
+      <button class="slider-nav slider-prev" onclick="moveSlider(-1)">&#8592;</button>
+      <button class="slider-nav slider-right" onclick="moveSlider(1)">&#8594;</button>
+    </div>
+
+    <!-- Dots -->
+    <div class="slider-dots" id="sliderDots">
+      <button class="slider-dot active" onclick="goToSlide(0)"></button>
+      <button class="slider-dot" onclick="goToSlide(1)"></button>
+      <button class="slider-dot" onclick="goToSlide(2)"></button>
+      <button class="slider-dot" onclick="goToSlide(3)"></button>
+      <button class="slider-dot" onclick="goToSlide(4)"></button>
+      <button class="slider-dot" onclick="goToSlide(5)"></button>
+    </div>
+
+    <!-- Thumbnail Strip -->
+    <div class="slider-thumbs" id="sliderThumbs">
+      <div class="slider-thumb active" onclick="goToSlide(0)"><span>🌿</span><span class="thumb-label">Lawn Care</span></div>
+      <div class="slider-thumb" onclick="goToSlide(1)"><span>🌸</span><span class="thumb-label">Garden Beds</span></div>
+      <div class="slider-thumb" onclick="goToSlide(2)"><span>🍂</span><span class="thumb-label">Mulching</span></div>
+      <div class="slider-thumb" onclick="goToSlide(3)"><span>🌱</span><span class="thumb-label">Fertilizing</span></div>
+      <div class="slider-thumb" onclick="goToSlide(4)"><span>❄️</span><span class="thumb-label">Snow Removal</span></div>
+      <div class="slider-thumb" onclick="goToSlide(5)"><span>🏡</span><span class="thumb-label">Full Property</span></div>
+    </div>
+
+  </div>
+</div>
+
 
 <div class="services-section" id="services">
   <div class="services-inner">
@@ -713,6 +1050,50 @@
   const EMAILJS_SERVICE_ID  = 'service_7mcmzvq';
   const EMAILJS_TEMPLATE_ID = 'template_tfofq5j';
   const EMAILJS_PUBLIC_KEY  = 'OK7h1gV_EoTKVCRVp';
+
+
+  // ---- Image Slider ----
+  let currentSlide = 0;
+  const totalSlides = 6;
+  let sliderTimer;
+
+  function goToSlide(n) {
+    const track = document.getElementById('sliderTrack');
+    const slides = track.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slider-dot');
+    const thumbs = document.querySelectorAll('.slider-thumb');
+
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (n + totalSlides) % totalSlides;
+    slides[currentSlide].classList.add('active');
+
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+    thumbs.forEach((t, i) => t.classList.toggle('active', i === currentSlide));
+
+    resetSliderTimer();
+  }
+
+  function moveSlider(dir) { goToSlide(currentSlide + dir); }
+
+  function resetSliderTimer() {
+    clearInterval(sliderTimer);
+    sliderTimer = setInterval(() => moveSlider(1), 5000);
+  }
+
+  resetSliderTimer();
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  const sliderEl = document.getElementById('mainSlider');
+  if (sliderEl) {
+    sliderEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    sliderEl.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) moveSlider(diff > 0 ? 1 : -1);
+    });
+  }
 
   // ---- Tab switching ----
   function switchTab(name, el) {
